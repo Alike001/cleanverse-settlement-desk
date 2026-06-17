@@ -33,6 +33,7 @@ function setMetrics(decision, colorClass) {
   const el = $("metricDecision");
   el.textContent = decision;
   el.className = colorClass || "";
+  $("heroDecision").textContent = decision;
 }
 
 function setRunning(running) {
@@ -264,22 +265,33 @@ async function saveMandate() {
 
 // ── History / ledger panel ───────────────────────────────────────────
 async function refreshHistory() {
-  const entries = await api("/api/ledger");
-  if (!entries.length) {
-    $("historyList").innerHTML = `<p class="hint">No preflight runs yet. Run a preflight above to start building the audit trail.</p>`;
-    return;
+  const btn = $("refreshHistoryBtn");
+  const original = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = "Refreshing…";
+
+  try {
+    const entries = await api("/api/ledger");
+    $("heroLedger").textContent = `${entries.length} entr${entries.length === 1 ? "y" : "ies"}`;
+    if (!entries.length) {
+      $("historyList").innerHTML = `<p class="hint">No preflight runs yet. Run a preflight above to start building the audit trail.</p>`;
+      return;
+    }
+    $("historyList").innerHTML = entries.slice(0, 25).map((e) => `
+      <article class="history-item ${e.decision}">
+        <div class="history-head">
+          <span class="status ${e.decision === "approved" ? "pass" : e.decision === "human_review" ? "warn" : "fail"}">${e.decision.replace("_", " ").toUpperCase()}</span>
+          <span class="history-time">${new Date(e.timestamp).toLocaleString()}</span>
+        </div>
+        <strong>${e.intent.task}</strong>
+        <p>$${e.intent.amount.toLocaleString()} · ${e.intent.chain}/${e.intent.symbol} · ${e.intent.payer.slice(0, 8)}… → ${e.intent.receiver.slice(0, 8)}…</p>
+        ${e.reasons.length ? `<p class="history-reason">${e.reasons.join(" ")}</p>` : ""}
+      </article>
+    `).join("");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = original;
   }
-  $("historyList").innerHTML = entries.slice(0, 25).map((e) => `
-    <article class="history-item ${e.decision}">
-      <div class="history-head">
-        <span class="status ${e.decision === "approved" ? "pass" : e.decision === "human_review" ? "warn" : "fail"}">${e.decision.replace("_", " ").toUpperCase()}</span>
-        <span class="history-time">${new Date(e.timestamp).toLocaleString()}</span>
-      </div>
-      <strong>${e.intent.task}</strong>
-      <p>$${e.intent.amount.toLocaleString()} · ${e.intent.chain}/${e.intent.symbol} · ${e.intent.payer.slice(0, 8)}… → ${e.intent.receiver.slice(0, 8)}…</p>
-      ${e.reasons.length ? `<p class="history-reason">${e.reasons.join(" ")}</p>` : ""}
-    </article>
-  `).join("");
 }
 
 // ── Faucet panel ──────────────────────────────────────────────────────
@@ -313,7 +325,7 @@ async function requestFaucet() {
     $("faucetResult").textContent = `Error: ${err.message}`;
   } finally {
     btn.disabled = false;
-    btn.textContent = "Request test tokens";
+    btn.textContent = "Request demo funds";
   }
 }
 
@@ -323,8 +335,10 @@ async function refreshModeUI() {
   const note = $("modeNote");
   if (status.configured) {
     note.textContent = "Backend has real Cleanverse credentials configured. Toggle to call the live sandbox.";
+    $("heroMode").textContent = state.live ? "Live mode" : "Mock mode";
   } else {
     note.textContent = "Backend has no Cleanverse credentials configured — running mock-only.";
+    $("heroMode").textContent = "Mock mode";
   }
 }
 
@@ -343,6 +357,7 @@ $("modeToggle").addEventListener("click", () => {
   state.live = !state.live;
   $("modeToggle").textContent = state.live ? "Live mode" : "Mock mode";
   $("modeToggle").style.background = state.live ? "#2557d6" : "";
+  $("heroMode").textContent = state.live ? "Live mode" : "Mock mode";
 });
 
 $("saveMandateBtn").addEventListener("click", saveMandate);

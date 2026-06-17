@@ -12,7 +12,7 @@
         <img src="./assets/icon.svg" alt="" />
         <div>
           <strong>Cleanverse Settlement Desk</strong>
-          <span>Verified agent payment preflight</span>
+          <span>Verified agent payment control desk</span>
         </div>
       </div>
       <nav aria-label="Main">
@@ -32,18 +32,29 @@
 
     <main>
       <header class="topbar">
-        <div>
+        <div class="hero-copy">
           <p class="eyebrow">Cleanverse Build: Verified Finance Hackathon</p>
           <h1>Approve agent payments before money moves.</h1>
           <p class="lede">
-            A control desk that checks A-Pass identity, A-Token eligibility, deposit readiness,
-            institution whitelist, spend mandate, and audit evidence before an AI agent settles a payment.
+            A control desk that turns an AI payment request into a verified, explainable decision.
+            It checks identity, compliant settlement rails, deposit readiness, institution trust,
+            spend policy, and audit evidence before anything settles.
           </p>
         </div>
-        <div class="deadline">
-          <span>Demo deadline</span>
-          <strong>June 17, 23:59 UTC</strong>
-        </div>
+        <aside class="hero-aside">
+          <div class="hero-stat">
+            <strong id="heroMode">Mock mode</strong>
+            <p>Live mode calls the Cleanverse sandbox. Mock mode keeps the flow stable for demo recording.</p>
+          </div>
+          <div class="hero-stat">
+            <strong id="heroDecision">Ready to check</strong>
+            <p>Starts neutral, then becomes approved, review, or blocked after preflight.</p>
+          </div>
+          <div class="hero-stat">
+            <strong id="heroLedger">0 entries</strong>
+            <p>Each preflight is written to the local audit ledger for the demo.</p>
+          </div>
+        </aside>
       </header>
 
       <section class="metrics" aria-label="Demo summary">
@@ -70,7 +81,7 @@
         <article>
           <span>A-Token</span>
           <strong>Compliant settlement rail</strong>
-          <p>Resolves the Cleanverse A-Token pair and verifies transfer eligibility for the selected payment rail.</p>
+          <p>Resolves the Cleanverse settlement token and verifies transfer eligibility for the selected payment rail.</p>
         </article>
         <article>
           <span>Operations</span>
@@ -85,7 +96,7 @@
             <p class="eyebrow">Step 1</p>
             <h2>Create payment intent</h2>
           </div>
-          <button id="sampleBtn" type="button" class="secondary">Load supplier demo</button>
+          <button id="sampleBtn" type="button" class="secondary">Load demo intent</button>
         </div>
 
         <form id="intentForm" class="grid-form">
@@ -200,7 +211,7 @@
         <div class="panel-head">
           <div>
             <p class="eyebrow">Persistent record</p>
-          <h2>Audit history</h2>
+            <h2>Audit history</h2>
           </div>
           <button id="refreshHistoryBtn" type="button" class="secondary">Refresh</button>
         </div>
@@ -213,11 +224,11 @@
       <section id="faucet" class="panel">
         <div class="panel-head">
           <div>
-            <p class="eyebrow">Optional — real testnet action</p>
-            <h2>Request testnet tokens</h2>
+            <p class="eyebrow">Monad testnet</p>
+            <h2>Request demo funds</h2>
           </div>
         </div>
-        <p class="hint">Calls Cleanverse's <code>/faucet</code> endpoint directly (live mode only) to mint test USDC/USDT to a wallet and return a real transaction hash.</p>
+        <p class="hint">Calls Cleanverse's <code>/faucet</code> endpoint directly in live mode to mint testnet funds to a wallet and return a transaction hash.</p>
         <form id="faucetForm" class="grid-form">
           <label>
             Chain
@@ -238,11 +249,11 @@
             <input id="fAmount" value="1" />
           </label>
           <label class="wide">
-            Deposit address
-            <input id="fAddress" value="0x888895E314BF33CEeBCF5320279061aed3a5E2bd" />
+            Demo wallet address
+            <input id="fAddress" value="0x4b9eb9eeE102d377d56Da8f863f3f5AF1710A9Ea" />
           </label>
         </form>
-        <button id="faucetBtn" type="button" class="secondary">Request test tokens</button>
+        <button id="faucetBtn" type="button" class="secondary">Request demo funds</button>
         <div id="faucetResult" class="receipt empty" style="margin-top:14px;">No faucet request yet.</div>
       </section>
     </main>

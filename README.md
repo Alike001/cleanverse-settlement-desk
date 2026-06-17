@@ -1,123 +1,65 @@
 # Cleanverse Settlement Desk
 
-**A control desk that verifies AI-agent payments before money moves.**
+Cleanverse Settlement Desk is a payment review desk for AI-agent transactions. It checks whether a proposed payment is allowed before money moves, then records the decision in an audit trail the team can explain to judges, operators, and compliance reviewers.
 
-**Demo video: [TODO - record before submitting]**
+Built for Cleanverse Build: Verified Finance Hackathon 2026, Trusted AI Agent Transactions track.
 
-**Live demo: [TODO - paste Vercel URL]**
+## What It Does
 
-*Built for Cleanverse Build: Verified Finance Hackathon 2026 - Trusted AI Agent Transactions track. Sponsor target: Cleanverse.*
+- Creates a payment intent for an AI procurement or settlement task
+- Runs a server-side preflight against Cleanverse primitives
+- Checks A-Pass identity for payer and receiver wallets
+- Resolves the compliant A-Token rail for the selected asset and chain
+- Checks the agent spend mandate before approval
+- Pulls deposit readiness and institution whitelist evidence
+- Writes every decision to an audit ledger with a readable receipt
 
----
+## Why It Matters
 
-## The Problem
-
-AI agents can source vendors, negotiate terms, and prepare payments, but businesses still need a repeatable answer to one question: is this payment safe to approve, and can we prove why later? A wallet-to-wallet payment is not enough when the transaction depends on verified counterparties, clean deposit sources, and compliance evidence.
-
-## The Solution
-
-Cleanverse Settlement Desk is a payment operations dashboard for agent-driven settlement. It runs a Cleanverse preflight across A-Pass, A-Token, deposit address, transfer eligibility, institution whitelist, and a server-side spend mandate, then writes the result into an audit ledger with a readable receipt.
-
-## Quick Start
-
-```bash
-git clone https://github.com/Alike001/cleanverse-settlement-desk.git
-cd cleanverse-settlement-desk/server
-npm install
-cp .env.example .env
-npm start
-```
-
-Then open `http://localhost:8787`.
-
-Mock mode works without credentials. Live mode needs the Cleanverse hackathon `CLEANVERSE_APP_ID` and `CLEANVERSE_API_KEY` in `server/.env`.
-
-## Stack
-
-| Layer | Technology |
-| ----- | ---------- |
-| Frontend | HTML, CSS, vanilla JavaScript |
-| Backend | Node.js + Express |
-| Sponsor APIs | Cleanverse API v5.2 sandbox |
-| Compliance primitives | A-Pass, A-Token, institution whitelist, faucet |
-| Security | Server-side credential handling, AES-256-CBC helper for encrypted Cleanverse endpoints |
-| Storage | Local JSON audit ledger and mandate store |
-| Deployment | Vercel static frontend + serverless API |
+AI agents can already find suppliers and prepare payments. The missing layer is trust: who is being paid, whether the route is compliant, and whether there is a record a business can review later. This project turns that missing layer into a working desk instead of a slide deck.
 
 ## How It Works
 
-```
-┌─────────────────────┐
-│ Browser dashboard   │
-│ Payment intent UI   │
-└──────────┬──────────┘
-           │ calls /api/preflight
-┌──────────▼──────────┐
-│ Express API layer   │
-│ secrets stay here   │
-└──────────┬──────────┘
-           │ Cleanverse sandbox calls
-┌──────────▼──────────┐
-│ Cleanverse stack    │
-│ A-Pass + A-Token    │
-│ whitelist + faucet  │
-└──────────┬──────────┘
-           │ result
-┌──────────▼──────────┐
-│ Audit receipt       │
-│ ledger + decision   │
-└─────────────────────┘
-```
-
-The backend orchestrates the full preflight. It checks the agent mandate first, loads the supported A-Token rail, queries payer and receiver A-Pass profiles, verifies transfer eligibility, fetches a deposit address, checks the institution whitelist, and writes the result into the ledger.
+1. The user enters a payment intent.
+2. The backend evaluates the intent against the spend mandate.
+3. Cleanverse APIs verify the payer and receiver, resolve the settlement rail, and return compliance evidence.
+4. The app renders the result as a plain-language audit receipt.
+5. The decision is stored in a local ledger so the history stays visible during the demo.
 
 ## Cleanverse Integration
 
-| Endpoint | Purpose |
-| -------- | ------- |
-| `POST /query_deposit_atoken_list` | Resolve supported origin token and A-Token pair |
-| `POST /query_apass` | Check payer and receiver A-Pass profile |
-| `POST /verify_apass` | Verify whether a wallet can receive or transfer the selected A-Token |
-| `POST /query_deposit_address` | Find the Cleanverse deposit wallet for clean-fund routing |
-| `POST /query_institution_white_list` | Show approved institutions for deposit sources |
-| `POST /faucet` | Request testnet tokens when live sandbox mode is enabled |
+The backend is structured around the Cleanverse sandbox and uses the following primitives:
 
-The app also includes AES helper support for encrypted Cleanverse write/admin endpoints. Those endpoints are not required for the MVP demo flow, but the backend is structured so they can be added without exposing secrets to the browser.
+- `query_deposit_atoken_list`
+- `query_apass`
+- `verify_apass`
+- `query_deposit_address`
+- `query_institution_white_list`
+- `faucet`
 
-## Sponsor / Track Alignment
+The browser never handles the Cleanverse App ID or API key. Those stay on the server.
 
-- **Trusted AI Agent Transactions** - The product focuses on a real agent payment approval flow, not a generic transfer screen.
-- **Cleanverse A-Pass** - Both payer and receiver are checked for verified identity status before settlement approval.
-- **Cleanverse A-Token** - The selected origin token is mapped to the compliant settlement token used for eligibility checks.
-- **Cleanverse whitelist** - The UI shows which institutions can be trusted deposit sources for the selected rail.
-- **Cleanverse protocol adoption** - The project can become a reference app for agent-commerce builders integrating Cleanverse.
+## Testnet Faucet
 
-## Security Notes
+The Circle faucet is used to mint testnet assets to a wallet on Monad testnet so the demo can show a real funding flow. In this project, that wallet is just a test address for proving the protocol path and the audit trail. It is not real value.
 
-- Do not commit `server/.env`.
-- The real API key is ignored by Git and must stay server-side.
-- The browser never receives the Cleanverse App ID or API Key.
-- Vercel environment variables should be configured in the Vercel dashboard, not in source code.
+## Local Setup
 
-## Deployment
+```bash
+git clone https://github.com/Alike001/cleanverse-settlement-desk.git
+cd cleanverse-settlement-desk
+npm install
+npm start
+```
 
-See [DEPLOYMENT.md](./DEPLOYMENT.md).
+Open `http://localhost:8787` after the server starts.
 
-## Demo Script
+## Stack
 
-See [DEMO_SCRIPT.md](./DEMO_SCRIPT.md).
-
-## Future Roadmap
-
-- Replace local JSON storage with Supabase, Neon, or Vercel Postgres.
-- Add wallet connection and signed payment approval.
-- Add a merchant onboarding flow using Cleanverse A-Pass registration links.
-- Add transaction report download through `download_travel_rule`.
-- Package the backend as a Cleanverse developer reference integration.
-
-## Team
-
-- **Hammed Ali Oyeleye** - Frontend developer and Web3 builder - [GitHub](https://github.com/Alike001)
+- Frontend: HTML, CSS, vanilla JavaScript
+- Backend: Node.js, Express
+- Storage: local JSON ledger and mandate store
+- Sponsor integration: Cleanverse sandbox APIs
 
 ## License
 
