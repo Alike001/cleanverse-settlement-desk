@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Cleanverse Settlement Desk icon</title>
+  <desc id="desc">A shield, ledger, and verified payment mark for Cleanverse Settlement Desk.</desc>
+  <rect width="512" height="512" rx="96" fill="#07120f"/>
+  <circle cx="256" cy="256" r="196" fill="#0d211b"/>
+  <path d="M256 78l132 48v108c0 88-52 154-132 200-80-46-132-112-132-200V126l132-48z" fill="#102c24" stroke="#37e6a3" stroke-width="16" stroke-linejoin="round"/>
+  <path d="M176 176h160c18 0 32 14 32 32v112c0 18-14 32-32 32H176c-18 0-32-14-32-32V208c0-18 14-32 32-32z" fill="#f4fff9"/>
+  <path d="M180 222h152" stroke="#07120f" stroke-width="18" stroke-linecap="round"/>
+  <path d="M180 268h92" stroke="#07120f" stroke-width="18" stroke-linecap="round"/>
+  <path d="M180 314h64" stroke="#37e6a3" stroke-width="18" stroke-linecap="round"/>
+  <circle cx="326" cy="306" r="58" fill="#37e6a3"/>
+  <path d="M298 306l18 18 40-48" fill="none" stroke="#07120f" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

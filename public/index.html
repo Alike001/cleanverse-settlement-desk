@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cleanverse Settlement Desk</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <aside class="sidebar">
+      <div class="brand">
+        <img src="./assets/icon.svg" alt="" />
+        <div>
+          <strong>Cleanverse Settlement Desk</strong>
+          <span>Verified agent payment preflight</span>
+        </div>
+      </div>
+      <nav aria-label="Main">
+        <a href="#intent" class="active">Payment Intent</a>
+        <a href="#preflight">Cleanverse Preflight</a>
+        <a href="#audit">Audit Receipt</a>
+        <a href="#mandate">Agent Mandate</a>
+        <a href="#history">Audit History</a>
+        <a href="#faucet">Testnet Faucet</a>
+      </nav>
+      <div class="mode-card">
+        <span class="label">API mode</span>
+        <button id="modeToggle" type="button">Mock mode</button>
+        <p id="modeNote">Backend has real Cleanverse credentials configured. Toggle to call the live sandbox.</p>
+      </div>
+    </aside>
+
+    <main>
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Cleanverse Build: Verified Finance Hackathon</p>
+          <h1>Approve agent payments before money moves.</h1>
+          <p class="lede">
+            A control desk that checks A-Pass identity, A-Token eligibility, deposit readiness,
+            institution whitelist, spend mandate, and audit evidence before an AI agent settles a payment.
+          </p>
+        </div>
+        <div class="deadline">
+          <span>Demo deadline</span>
+          <strong>June 17, 23:59 UTC</strong>
+        </div>
+      </header>
+
+      <section class="metrics" aria-label="Demo summary">
+        <div>
+          <span>Intent value</span>
+          <strong id="metricAmount">$2,500.00</strong>
+        </div>
+        <div>
+          <span>Selected rail</span>
+          <strong id="metricRail">Base / USDC</strong>
+        </div>
+        <div>
+          <span>Decision</span>
+          <strong id="metricDecision">Ready to check</strong>
+        </div>
+      </section>
+
+      <section id="intent" class="panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Step 1</p>
+            <h2>Create payment intent</h2>
+          </div>
+          <button id="sampleBtn" type="button" class="secondary">Load supplier demo</button>
+        </div>
+
+        <form id="intentForm" class="grid-form">
+          <label>
+            Agent task
+            <input id="task" value="Procure shipment inspection service" />
+          </label>
+          <label>
+            Supplier
+            <input id="supplier" value="Zero Hash verified supplier desk" />
+          </label>
+          <label>
+            Chain
+            <select id="chain">
+              <option value="base">Base</option>
+              <option value="monad">Monad</option>
+              <option value="solana">Solana</option>
+              <option value="polygon">Polygon</option>
+              <option value="ethereum">Ethereum</option>
+              <option value="arbitrum">Arbitrum</option>
+            </select>
+          </label>
+          <label>
+            Token
+            <select id="symbol">
+              <option value="usdc">USDC</option>
+              <option value="usdt">USDT</option>
+            </select>
+          </label>
+          <label>
+            Category
+            <select id="category">
+              <option value="shipment_inspection">Shipment inspection</option>
+              <option value="supplier_payment">Supplier payment</option>
+              <option value="logistics">Logistics</option>
+              <option value="software_license">Software license</option>
+            </select>
+          </label>
+          <label>
+            Amount USD
+            <input id="amount" type="number" min="1" value="2500" />
+          </label>
+          <label class="wide">
+            Payer wallet
+            <input id="payer" value="0x888895E314BF33CEeBCF5320279061aed3a5E2bd" />
+          </label>
+          <label class="wide">
+            Receiver wallet
+            <input id="receiver" value="0x52411a2b15e1Cd44bd332eF4F8D599D9e7ae6103" />
+          </label>
+        </form>
+      </section>
+
+      <section id="preflight" class="panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Step 2</p>
+            <h2>Run Cleanverse preflight</h2>
+          </div>
+          <button id="runBtn" type="button">Run preflight</button>
+        </div>
+        <div id="checks" class="checks"></div>
+      </section>
+
+      <section id="audit" class="panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Step 3</p>
+            <h2>Audit receipt</h2>
+          </div>
+          <button id="copyBtn" type="button" class="secondary">Copy receipt</button>
+        </div>
+        <div id="receipt" class="receipt empty">
+          Run preflight to generate an audit receipt.
+        </div>
+      </section>
+
+      <section id="mandate" class="panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Agent policy</p>
+            <h2>Spend mandate</h2>
+          </div>
+          <button id="saveMandateBtn" type="button" class="secondary">Save mandate</button>
+        </div>
+        <form id="mandateForm" class="grid-form">
+          <label>
+            Agent name
+            <input id="mAgentName" value="Procurement Agent #1" />
+          </label>
+          <label>
+            Max amount (USD)
+            <input id="mMaxAmount" type="number" min="1" value="5000" />
+          </label>
+          <label>
+            Human approval threshold (USD)
+            <input id="mApprovalThreshold" type="number" min="1" value="5000" />
+          </label>
+          <label class="wide">
+            Allowed chains (comma separated)
+            <input id="mChains" value="base, polygon, ethereum, arbitrum, monad" />
+          </label>
+          <label class="wide">
+            Allowed categories (comma separated)
+            <input id="mCategories" value="supplier_payment, shipment_inspection, logistics, software_license" />
+          </label>
+        </form>
+        <p class="hint">This mandate is enforced server-side on every preflight run — not just a UI field.</p>
+      </section>
+
+      <section id="history" class="panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Persistent record</p>
+            <h2>Audit history</h2>
+          </div>
+          <button id="refreshHistoryBtn" type="button" class="secondary">Refresh</button>
+        </div>
+        <div id="historyList" class="history-list">
+          <p class="hint">No preflight runs yet. Run a preflight above to start building the audit trail.</p>
+        </div>
+      </section>
+
+      <section id="faucet" class="panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Optional — real testnet action</p>
+            <h2>Request testnet tokens</h2>
+          </div>
+        </div>
+        <p class="hint">Calls Cleanverse's <code>/faucet</code> endpoint directly (live mode only) to mint test USDC/USDT to a wallet and return a real transaction hash.</p>
+        <form id="faucetForm" class="grid-form">
+          <label>
+            Chain
+            <select id="fChain">
+              <option value="base">Base</option>
+              <option value="monad">Monad</option>
+            </select>
+          </label>
+          <label>
+            Symbol
+            <select id="fSymbol">
+              <option value="usdc">USDC</option>
+              <option value="usdt">USDT</option>
+            </select>
+          </label>
+          <label>
+            Amount
+            <input id="fAmount" value="1" />
+          </label>
+          <label class="wide">
+            Deposit address
+            <input id="fAddress" value="0x888895E314BF33CEeBCF5320279061aed3a5E2bd" />
+          </label>
+        </form>
+        <button id="faucetBtn" type="button" class="secondary">Request test tokens</button>
+        <div id="faucetResult" class="receipt empty" style="margin-top:14px;">No faucet request yet.</div>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

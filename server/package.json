@@ -1,0 +1,16 @@
+{
+  "name": "cleanverse-settlement-desk-server",
+  "version": "1.0.0",
+  "description": "Backend proxy for Cleanverse Settlement Desk - keeps api-id/api-key server-side",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "dotenv": "^16.4.5",
+    "cors": "^2.8.5"
+  }
+}
