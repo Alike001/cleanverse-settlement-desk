@@ -2,7 +2,7 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import path from "path";
-import { fileURLToPath } from "url";
+import { fileURLToPath, pathToFileURL } from "url";
 
 import { callCleanverse, isConfigured } from "./cleanverseClient.js";
 import * as mock from "./mockData.js";
@@ -200,7 +200,11 @@ app.post("/api/preflight", async (req, res) => {
   res.json({ ...response, ledgerEntry });
 });
 
-app.listen(PORT, () => {
-  console.log(`Cleanverse Settlement Desk server running on http://localhost:${PORT}`);
-  console.log(`Cleanverse live mode configured: ${isConfigured()}`);
-});
+export default app;
+
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  app.listen(PORT, () => {
+    console.log(`Cleanverse Settlement Desk server running on http://localhost:${PORT}`);
+    console.log(`Cleanverse live mode configured: ${isConfigured()}`);
+  });
+}

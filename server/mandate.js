@@ -3,7 +3,8 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const MANDATE_PATH = path.join(__dirname, "..", "data", "mandate.json");
+const DATA_DIR = process.env.VERCEL ? "/tmp/cleanverse-settlement-desk" : path.join(__dirname, "..", "data");
+const MANDATE_PATH = path.join(DATA_DIR, "mandate.json");
 
 const DEFAULT_MANDATE = {
   agentName: "Procurement Agent #1",

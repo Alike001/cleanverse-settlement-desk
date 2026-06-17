@@ -133,53 +133,53 @@ function receiptText(result) {
   const liveCount = apiModes.filter((m) => m === "live").length;
 
   const decisionLabel = {
-    approved: "✓ APPROVED — Cleanverse-Ready Settlement",
-    human_review: "⚠ APPROVED PENDING HUMAN SIGN-OFF",
-    blocked: "✗ BLOCKED / NEEDS REVIEW"
+    approved: "APPROVED - Cleanverse-ready settlement",
+    human_review: "APPROVED PENDING HUMAN SIGN-OFF",
+    blocked: "BLOCKED / NEEDS REVIEW"
   }[decision];
 
   const lines = [
-    "════════════════════════════════════════════════════",
-    "   CLEANVERSE SETTLEMENT DESK — AUDIT RECEIPT",
-    "════════════════════════════════════════════════════",
+    "====================================================",
+    "   CLEANVERSE SETTLEMENT DESK - AUDIT RECEIPT",
+    "====================================================",
     "",
     `Receipt ID       : ${ledgerEntry?.id || "—"}`,
     `Decision         : ${decisionLabel}`,
     `Data source      : ${liveCount > 0 ? `${liveCount}/${apiModes.length} checks via LIVE Cleanverse sandbox` : "Mock demo data"}`,
     `Generated        : ${timestamp}`,
     "",
-    "── AGENT MANDATE ───────────────────────────────────",
+    "-- AGENT MANDATE -----------------------------------",
     `Agent            : ${mandateResult.mandate.agentName}`,
     `Mandate max      : $${mandateResult.mandate.maxAmountUsd.toLocaleString()}`,
     `Mandate check    : ${mandateResult.allowed ? "Within mandate" : "VIOLATION"}`,
     mandateResult.reasons.length ? `Notes            : ${mandateResult.reasons.join(" ")}` : null,
     "",
-    "── PAYMENT INTENT ──────────────────────────────────",
+    "-- PAYMENT INTENT ----------------------------------",
     `Agent task       : ${intent.task}`,
     `Supplier         : ${intent.supplier}`,
     `Rail             : ${intent.chain.toUpperCase()} / ${intent.symbol.toUpperCase()}`,
     `Amount           : $${intent.amount.toLocaleString()}`,
     `Category         : ${intent.category}`,
     "",
-    "── COUNTERPARTY VERIFICATION ───────────────────────",
+    "-- COUNTERPARTY VERIFICATION -----------------------",
     `Payer wallet     : ${intent.payer}`,
     `Receiver wallet  : ${intent.receiver}`,
     `Payer status     : ${payerVerify.message}`,
     `Receiver status  : ${receiverVerify.message}`,
     "",
-    "── CLEANVERSE SETTLEMENT RAIL ──────────────────────",
+    "-- CLEANVERSE SETTLEMENT RAIL ----------------------",
     token ? `Origin token     : ${token.origin_token.symbol.toUpperCase()} (${token.origin_token.address})` : "Origin token     : not resolved",
     token ? `A-Token          : ${token.atoken.symbol.toUpperCase()} (${token.atoken.address})` : "",
     token ? `AccessCore       : ${token.accesscore_address}` : "",
     "",
-    "── INSTITUTION WHITELIST ───────────────────────────",
+    "-- INSTITUTION WHITELIST ---------------------------",
     `Approved sources : ${institutions || "No whitelist returned"}`,
     "",
-    "════════════════════════════════════════════════════",
-    "Powered by Cleanverse A-Pass · A-Token · ClevrPay",
+    "====================================================",
+    "Powered by Cleanverse A-Pass, A-Token, and ClevrPay",
     "Track: Trusted AI Agent Transactions",
     "Cleanverse Build: Verified Finance Hackathon 2026",
-    "════════════════════════════════════════════════════"
+    "===================================================="
   ].filter((l) => l !== null);
 
   return lines.join("\n");
@@ -208,7 +208,7 @@ async function runPreflight() {
     renderChecks(result);
 
     const colorClass = result.decision === "approved" ? "decision-approved" : result.decision === "human_review" ? "decision-warn" : "decision-blocked";
-    const label = result.decision === "approved" ? "✓ Approved" : result.decision === "human_review" ? "⚠ Needs human sign-off" : "✗ Blocked";
+    const label = result.decision === "approved" ? "Approved" : result.decision === "human_review" ? "Needs human sign-off" : "Blocked";
     setMetrics(label, colorClass);
 
     $("receipt").classList.remove("empty");
@@ -258,7 +258,7 @@ async function saveMandate() {
       allowedCategories: $("mCategories").value.split(",").map((s) => s.trim()).filter(Boolean)
     })
   });
-  btn.textContent = "✓ Saved";
+    btn.textContent = "Saved";
   setTimeout(() => (btn.textContent = "Save mandate"), 1400);
 }
 
@@ -334,14 +334,14 @@ $("copyBtn").addEventListener("click", async () => {
   const text = $("receipt").textContent;
   if (text && !$("receipt").classList.contains("empty")) {
     await navigator.clipboard.writeText(text);
-    $("copyBtn").textContent = "✓ Copied";
+    $("copyBtn").textContent = "Copied";
     setTimeout(() => ($("copyBtn").textContent = "Copy receipt"), 1400);
   }
 });
 
 $("modeToggle").addEventListener("click", () => {
   state.live = !state.live;
-  $("modeToggle").textContent = state.live ? "⚡ Live mode" : "Mock mode";
+  $("modeToggle").textContent = state.live ? "Live mode" : "Mock mode";
   $("modeToggle").style.background = state.live ? "#2557d6" : "";
 });
 

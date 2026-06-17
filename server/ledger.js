@@ -3,7 +3,8 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const LEDGER_PATH = path.join(__dirname, "..", "data", "ledger.json");
+const DATA_DIR = process.env.VERCEL ? "/tmp/cleanverse-settlement-desk" : path.join(__dirname, "..", "data");
+const LEDGER_PATH = path.join(DATA_DIR, "ledger.json");
 
 function ensureLedgerFile() {
   const dir = path.dirname(LEDGER_PATH);

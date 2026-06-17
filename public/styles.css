@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Manrope:wght@400;600;700;800&display=swap");
+
 :root {
   --bg: #f4f7f5;
   --ink: #101816;
@@ -20,7 +22,7 @@ body {
   min-height: 100vh;
   background: var(--bg);
   color: var(--ink);
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: "Manrope", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 button, input, select { font: inherit; }
@@ -102,6 +104,48 @@ h2 { font-size: 22px; }
 
 .metrics { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; margin: 26px 0; }
 .metrics > div { padding: 18px; }
+
+.impact-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 0 0 20px;
+}
+
+.impact-strip article {
+  min-height: 152px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(23, 185, 120, 0.08), rgba(255, 255, 255, 0) 48%),
+    #ffffff;
+  box-shadow: var(--shadow);
+}
+
+.impact-strip span {
+  display: inline-flex;
+  margin-bottom: 12px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: #def8ea;
+  color: var(--accent-dark);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.impact-strip strong {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.impact-strip p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
+  font-size: 14px;
+}
 
 #metricDecision.decision-approved { color: #075f3f; }
 #metricDecision.decision-blocked { color: var(--red); }
@@ -238,7 +282,7 @@ menu { margin: 8px 0 0; padding: 0; display: flex; justify-content: end; gap: 10
 @media (max-width: 900px) {
   .sidebar { position: static; width: auto; }
   main { margin-left: 0; padding: 18px; }
-  .topbar, .metrics, .grid-form, .checks { grid-template-columns: 1fr; }
+  .topbar, .metrics, .impact-strip, .grid-form, .checks { grid-template-columns: 1fr; }
   h1 { font-size: 34px; }
   .wide { grid-column: auto; }
   .spinner-row { grid-column: span 1; }

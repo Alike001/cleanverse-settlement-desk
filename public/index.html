@@ -61,6 +61,24 @@
         </div>
       </section>
 
+      <section class="impact-strip" aria-label="Protocol value">
+        <article>
+          <span>A-Pass</span>
+          <strong>Verified counterparties</strong>
+          <p>Checks whether payer and receiver have active identity credentials before an agent payment proceeds.</p>
+        </article>
+        <article>
+          <span>A-Token</span>
+          <strong>Compliant settlement rail</strong>
+          <p>Resolves the Cleanverse A-Token pair and verifies transfer eligibility for the selected payment rail.</p>
+        </article>
+        <article>
+          <span>Operations</span>
+          <strong>Audit-ready decisioning</strong>
+          <p>Turns Cleanverse checks into a receipt, mandate decision, and review history a business can understand.</p>
+        </article>
+      </section>
+
       <section id="intent" class="panel">
         <div class="panel-head">
           <div>
@@ -182,10 +200,11 @@
         <div class="panel-head">
           <div>
             <p class="eyebrow">Persistent record</p>
-            <h2>Audit history</h2>
+          <h2>Audit history</h2>
           </div>
           <button id="refreshHistoryBtn" type="button" class="secondary">Refresh</button>
         </div>
+        <p class="hint">Local development stores this ledger in <code>data/ledger.json</code>. On Vercel, serverless storage is temporary, so this panel is for demo evidence only.</p>
         <div id="historyList" class="history-list">
           <p class="hint">No preflight runs yet. Run a preflight above to start building the audit trail.</p>
         </div>
